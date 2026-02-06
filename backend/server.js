@@ -14,7 +14,7 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'boardgames-rating-vercel2.vercel.app' 
+    'https://boardgames-rating-vercel2.vercel.app' 
   ],
   credentials: true
 }));
