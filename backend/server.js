@@ -11,7 +11,13 @@ const puntuacionesRoutes = require('./routes/puntuaciones');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'boardgames-rating-vercel2.vercel.app' // Agrega tu URL de Vercel aquí
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 app.use('/images', express.static('public/images'));
