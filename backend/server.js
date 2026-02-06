@@ -14,7 +14,7 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'boardgames-rating-vercel2.vercel.app' // Agrega tu URL de Vercel aquí
+    'boardgames-rating-vercel2.vercel.app' 
   ],
   credentials: true
 }));
@@ -34,6 +34,15 @@ app.get('/health/db', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+app.get('/debug/usuarios', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT id_usuario, nombre_usuario FROM usuarios');
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
