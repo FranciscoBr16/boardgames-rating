@@ -1,0 +1,234 @@
+.game-card {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.game-card-inner {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.image-carousel {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: #f0f0f0;
+  overflow: hidden;
+}
+
+.game-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: #ccc;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  transition: background 0.3s;
+  z-index: 10;
+}
+
+.carousel-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.carousel-btn.prev {
+  left: 10px;
+}
+
+.carousel-btn.next {
+  right: 10px;
+}
+
+.image-indicators {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transition: background 0.3s;
+}
+
+.indicator.active {
+  background: white;
+  width: 24px;
+  border-radius: 4px;
+}
+
+.game-info {
+  padding: 24px;
+}
+
+.game-title {
+  margin: 0 0 12px 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.game-meta {
+  margin: 8px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.game-description {
+  margin: 16px 0 0 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+.rating-section {
+  padding: 0 24px 24px 24px;
+}
+
+.rating-section h3 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  color: #333;
+  text-align: center;
+}
+
+.rating-buttons-quick {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.rating-btn {
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.rating-btn:hover:not(:disabled) {
+  border-color: #667eea;
+  background: #f0f4ff;
+}
+
+.rating-btn.selected {
+  border-color: #667eea;
+  background: #667eea;
+  color: white;
+}
+
+.rating-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.puntuacion-input-card {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 18px;
+  text-align: center;
+  font-weight: 600;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.puntuacion-input-card:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.puntuacion-input-card:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.btn-puntuar {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 12px;
+}
+
+.btn-puntuar:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-puntuar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-no-jugado {
+  width: 100%;
+  padding: 14px;
+  background: #f5f5f5;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-no-jugado:hover:not(:disabled) {
+  background: #e0e0e0;
+}
+
+.btn-no-jugado:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

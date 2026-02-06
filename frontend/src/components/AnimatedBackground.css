@@ -1,0 +1,33 @@
+.animated-bg-container {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.animated-bg {
+  position: fixed;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
+  background-image: url('https://media.istockphoto.com/id/1362911526/vector/art-illustration.jpg?s=612x612&w=0&k=20&c=eKt3dnVU5DDFuX1JPnKaW3qM7Fy_chi-3QKsnk3uhK0=');
+  background-repeat: repeat;
+  background-size: 400px 400px;
+  animation: diagonalFall 120s linear infinite;
+  z-index: -1;
+}
+
+@keyframes diagonalFall {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(33.33%, 33.33%);
+  }
+}
+
+.content-overlay {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
