@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Crear instancia de axios con configuración base
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: `${API_URL}/api`,
 });
 
 // Interceptor para agregar el token a todas las peticiones
@@ -16,9 +16,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 // Funciones de autenticación
@@ -41,7 +39,7 @@ export const getUsuarioActual = () => {
   return usuario ? JSON.parse(usuario) : null;
 };
 
-// Funciones de juegos
+// Juegos
 export const obtenerJuegos = async () => {
   const response = await api.get('/juegos');
   return response.data;
@@ -52,7 +50,7 @@ export const obtenerJuego = async (id) => {
   return response.data;
 };
 
-// Funciones de puntuaciones
+// Puntuaciones
 export const obtenerPuntuacionesUsuario = async () => {
   const response = await api.get('/puntuaciones/usuario');
   return response.data;
