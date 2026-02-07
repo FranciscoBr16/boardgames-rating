@@ -29,7 +29,7 @@ function Profile() {
         try {
           const juego = await obtenerJuego(puntuacion.id_juego);
           if (juego.imagenes && juego.imagenes.length > 0) {
-            imagenes[puntuacion.id_juego] = juego.imagenes[0]; // Primera imagen
+            imagenes[puntuacion.id_juego] = juego.imagenes[0];
           }
         } catch (err) {
           console.error(`Error al cargar imagen del juego ${puntuacion.id_juego}:`, err);
@@ -78,17 +78,18 @@ function Profile() {
     return (suma / jugados.length).toFixed(2);
   };
 
-  const obtenerJuegoFavorito = () => {
-  const jugados = puntuaciones.filter(p => p.estado === 'jugado' && p.puntuacion !== null);
-  if (jugados.length === 0) return null;
-  
-  // Encontrar el juego con la puntuación más alta
-  const favorito = jugados.reduce((max, juego) => {
-    return parseFloat(juego.puntuacion) > parseFloat(max.puntuacion) ? juego : max;
-  });
-  
-  return favorito;
-};
+  const obtenerPuntuacionMaxima = () => {
+    const jugados = puntuaciones.filter(p => p.estado === 'jugado' && p.puntuacion !== null);
+    if (jugados.length === 0) return null;
+    return Math.max(...jugados.map(p => parseFloat(p.puntuacion)));
+  };
+
+  const esFavorito = (puntuacion) => {
+    const maxPuntuacion = obtenerPuntuacionMaxima();
+    return puntuacion.estado === 'jugado' && 
+           puntuacion.puntuacion !== null && 
+           parseFloat(puntuacion.puntuacion) === maxPuntuacion;
+  };
 
   const handleLogout = () => {
     logout();
@@ -106,7 +107,11 @@ function Profile() {
     );
   }
 
-  const juegosJugados = puntuaciones.filter(p => p.estado === 'jugado');
+  // Separar y ordenar juegos
+  const juegosJugados = puntuaciones
+    .filter(p => p.estado === 'jugado')
+    .sort((a, b) => parseFloat(b.puntuacion) - parseFloat(a.puntuacion)); // Orden descendente
+
   const juegosNoJugados = puntuaciones.filter(p => p.estado === 'no_jugado');
 
   return (
@@ -114,38 +119,10 @@ function Profile() {
       <div className="profile-container">
         {/* Header */}
         <header className="profile-header">
-          <div className="header-left">
-            <div className="user-section">
-              <h1>👤 Mi Perfil</h1>
-              <p className="username">{usuario?.nombre}</p>
-            </div>
-            
-            {/* Juego Favorito Compacto */}
-            {obtenerJuegoFavorito() && (
-              <div className="juego-favorito-compacto">
-                <div className="favorito-label">⭐ JUEGO FAVORITO</div>
-                <div 
-                  className="favorito-mini-image"
-                  style={{
-                    backgroundImage: imagenesJuegos[obtenerJuegoFavorito().id_juego]
-                      ? `url(${imagenesJuegos[obtenerJuegoFavorito().id_juego]})`
-                      : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                  }}
-                >
-                  {!imagenesJuegos[obtenerJuegoFavorito().id_juego] && (
-                    <div className="mini-placeholder">🎲</div>
-                  )}
-                  <div className="mini-overlay">
-                    <div className="mini-nombre">{obtenerJuegoFavorito().nombre}</div>
-                    <div className="mini-puntuacion">
-                      {parseFloat(obtenerJuegoFavorito().puntuacion).toFixed(2)}/10
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+          <div>
+            <h1>👤 Mi Perfil</h1>
+            <p className="username">{usuario?.nombre}</p>
           </div>
-          
           <nav className="header-nav">
             <button onClick={() => navigate('/juegos')} className="btn-nav">
               Volver a Juegos
@@ -172,8 +149,6 @@ function Profile() {
           </div>
         </div>
 
-       
-
         {/* Juegos Calificados */}
         {juegosJugados.length > 0 && (
           <div className="puntuaciones-container">
@@ -182,13 +157,16 @@ function Profile() {
               {juegosJugados.map((puntuacion) => (
                 <div 
                   key={puntuacion.id_juego} 
-                  className="puntuacion-card"
+                  className={`puntuacion-card ${esFavorito(puntuacion) ? 'favorito' : ''}`}
                   style={{
                     backgroundImage: imagenesJuegos[puntuacion.id_juego] 
                       ? `url(${imagenesJuegos[puntuacion.id_juego]})` 
                       : 'none'
                   }}
                 >
+                  {esFavorito(puntuacion) && (
+                    <div className="favorito-badge-card">⭐ FAVORITO</div>
+                  )}
                   <div className="card-overlay"></div>
                   <div className="card-content">
                     <h3>{puntuacion.nombre}</h3>
