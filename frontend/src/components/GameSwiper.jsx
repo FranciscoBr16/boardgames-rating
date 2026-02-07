@@ -155,7 +155,7 @@ function GameSwiper() {
         <div className="empty-container">
           <div className="empty-card">
             <h2>🎉 ¡Felicidades!</h2>
-            <p>Has calificado todos los juegos disponibles</p>
+            <p>Has calificado todos los juegos disponibles, se que fueron muchos 😅</p>
             <button onClick={() => navigate('/perfil')} className="btn-primary">
               Ver mi perfil
             </button>

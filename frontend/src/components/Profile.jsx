@@ -137,7 +137,7 @@ function Profile() {
         <div className="stats-container">
           <div className="stat-card">
             <div className="stat-number">{juegosJugados.length}</div>
-            <div className="stat-label">Juegos Calificados</div>
+            <div className="stat-label">Juegos Calificados // Tu Top</div>
           </div>
           <div className="stat-card">
             <div className="stat-number">{calcularPromedio()}</div>
