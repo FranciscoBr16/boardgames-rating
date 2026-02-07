@@ -137,7 +137,7 @@ function Profile() {
         <div className="stats-container">
           <div className="stat-card">
             <div className="stat-number">{juegosJugados.length}</div>
-            <div className="stat-label">Juegos Calificados // Tu Top</div>
+            <div className="stat-label">Juegos Calificados</div>
           </div>
           <div className="stat-card">
             <div className="stat-number">{calcularPromedio()}</div>
@@ -152,7 +152,7 @@ function Profile() {
         {/* Juegos Calificados */}
         {juegosJugados.length > 0 && (
           <div className="puntuaciones-container">
-            <h2>🎮 Juegos Calificados</h2>
+            <h2>🎮 Juegos Calificados // Tu Top</h2>
             <div className="puntuaciones-grid">
               {juegosJugados.map((puntuacion) => (
                 <div 
