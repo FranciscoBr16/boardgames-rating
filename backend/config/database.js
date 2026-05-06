@@ -1,11 +1,17 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-// En PostgreSQL, la URL de conexión es la forma más común en hosting como Supabase/Neon
+console.log('Verificando conexión a base de datos...');
+if (!process.env.DATABASE_URL) {
+  console.error('ERROR: La variable DATABASE_URL no está definida en el entorno.');
+} else {
+  console.log('DATABASE_URL detectada correctamente.');
+}
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false // Requerido para muchos hosts gratuitos como Render/Supabase
+    rejectUnauthorized: false 
   }
 });
 
