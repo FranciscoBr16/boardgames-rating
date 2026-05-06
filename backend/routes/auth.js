@@ -20,9 +20,9 @@ router.post('/login', async (req, res) => {
     }
 
     const usuario = usuarios[0];
-    const claveValida = await bcrypt.compare(clave, usuario.clave);
-
-    if (!claveValida) {
+    
+    // Comparación en texto plano (sin encriptación)
+    if (clave !== usuario.clave) {
       return res.status(401).json({ mensaje: 'Credenciales inválidas' });
     }
 
