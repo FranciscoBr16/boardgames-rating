@@ -9,6 +9,8 @@ const router = express.Router();
 router.post('/login', async (req, res) => {
   try {
     const { nombre_usuario, clave } = req.body;
+    console.log(`Intento de login para: ${nombre_usuario}`);
+    console.log(`Clave recibida: ${clave}`);
 
     const { rows: usuarios } = await db.query(
       'SELECT * FROM usuarios WHERE nombre_usuario = $1',
