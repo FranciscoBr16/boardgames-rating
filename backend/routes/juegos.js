@@ -8,21 +8,21 @@ const router = express.Router();
 router.get('/', verificarToken, async (req, res) => {
   try {
     // Obtener juegos que NO han sido puntuados por este usuario
-    const [juegos] = await db.query(
+    const { rows: juegos } = await db.query(
       `SELECT j.* 
        FROM juegos j
        WHERE j.id_juego NOT IN (
          SELECT id_juego 
          FROM puntuaciones 
-         WHERE id_usuario = ?
+         WHERE id_usuario = $1
        )`,
       [req.userId]
     );
     
     // Agregar imágenes a cada juego
     for (let juego of juegos) {
-      const [imagenes] = await db.query(
-        'SELECT imagen FROM imagenes_juegos WHERE id_juego = ?',
+      const { rows: imagenes } = await db.query(
+        'SELECT imagen FROM imagenes_juegos WHERE id_juego = $1',
         [juego.id_juego]
       );
       juego.imagenes = imagenes.map(img => img.imagen);
@@ -38,8 +38,8 @@ router.get('/', verificarToken, async (req, res) => {
 // Obtener un juego específico
 router.get('/:id', verificarToken, async (req, res) => {
   try {
-    const [juegos] = await db.query(
-      'SELECT * FROM juegos WHERE id_juego = ?',
+    const { rows: juegos } = await db.query(
+      'SELECT * FROM juegos WHERE id_juego = $1',
       [req.params.id]
     );
 
@@ -49,8 +49,8 @@ router.get('/:id', verificarToken, async (req, res) => {
 
     const juego = juegos[0];
     
-    const [imagenes] = await db.query(
-      'SELECT imagen FROM imagenes_juegos WHERE id_juego = ?',
+    const { rows: imagenes } = await db.query(
+      'SELECT imagen FROM imagenes_juegos WHERE id_juego = $1',
       [juego.id_juego]
     );
     

@@ -1,15 +1,18 @@
-const mysql = require('mysql2');
+const { Pool } = require('pg');
 require('dotenv').config();
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
+// En PostgreSQL, la URL de conexión es la forma más común en hosting como Supabase/Neon
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false // Requerido para muchos hosts gratuitos como Render/Supabase
+  }
 });
 
-module.exports = pool.promise();
+// Helper para mantener compatibilidad con el estilo de mysql2 si es posible
+// Pero pg no devuelve [rows, fields], devuelve un objeto result.
+// Vamos a exportar el pool directamente y ajustar las rutas.
+module.exports = {
+  query: (text, params) => pool.query(text, params),
+  pool
+};

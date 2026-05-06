@@ -39,7 +39,7 @@ app.get('/health/db', async (req, res) => {
 
 app.get('/debug/usuarios', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT id_usuario, nombre_usuario FROM usuarios');
+    const { rows } = await db.query('SELECT id_usuario, nombre_usuario FROM usuarios');
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });

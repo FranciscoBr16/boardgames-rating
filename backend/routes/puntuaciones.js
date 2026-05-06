@@ -7,11 +7,11 @@ const router = express.Router();
 // Obtener puntuaciones del usuario
 router.get('/usuario', verificarToken, async (req, res) => {
   try {
-    const [puntuaciones] = await db.query(
+    const { rows: puntuaciones } = await db.query(
       `SELECT p.*, j.nombre, j.descripcion 
        FROM puntuaciones p 
        JOIN juegos j ON p.id_juego = j.id_juego 
-       WHERE p.id_usuario = ?`,
+       WHERE p.id_usuario = $1`,
       [req.userId]
     );
 
@@ -27,21 +27,21 @@ router.post('/', verificarToken, async (req, res) => {
   try {
     const { id_juego, puntuacion, estado } = req.body;
 
-    const [existing] = await db.query(
-      'SELECT * FROM puntuaciones WHERE id_juego = ? AND id_usuario = ?',
+    const { rows: existing } = await db.query(
+      'SELECT * FROM puntuaciones WHERE id_juego = $1 AND id_usuario = $2',
       [id_juego, req.userId]
     );
 
     if (existing.length > 0) {
       // Actualizar
       await db.query(
-        'UPDATE puntuaciones SET puntuacion = ?, estado = ? WHERE id_juego = ? AND id_usuario = ?',
+        'UPDATE puntuaciones SET puntuacion = $1, estado = $2 WHERE id_juego = $3 AND id_usuario = $4',
         [puntuacion, estado, id_juego, req.userId]
       );
     } else {
       // Insertar
       await db.query(
-        'INSERT INTO puntuaciones (id_juego, id_usuario, puntuacion, estado) VALUES (?, ?, ?, ?)',
+        'INSERT INTO puntuaciones (id_juego, id_usuario, puntuacion, estado) VALUES ($1, $2, $3, $4)',
         [id_juego, req.userId, puntuacion, estado]
       );
     }
