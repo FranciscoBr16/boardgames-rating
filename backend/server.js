@@ -12,10 +12,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://boardgames-rating-vercel2.vercel.app' 
-  ],
+  origin: '*', 
   credentials: true
 }));
 app.use(express.json());
