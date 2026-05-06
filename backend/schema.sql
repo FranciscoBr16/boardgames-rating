@@ -1,4 +1,4 @@
--- Esquema para PostgreSQL
+-- Esquema para PostgreSQL (Sincronizado con el Dump de MySQL)
 
 -- Tabla de Usuarios
 CREATE TABLE IF NOT EXISTS usuarios (
@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS juegos (
     id_juego SERIAL PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     descripcion TEXT,
+    editorial VARCHAR(100),
+    jugadores VARCHAR(50),
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -29,8 +31,8 @@ CREATE TABLE IF NOT EXISTS puntuaciones (
     id_puntuacion SERIAL PRIMARY KEY,
     id_juego INTEGER REFERENCES juegos(id_juego) ON DELETE CASCADE,
     id_usuario INTEGER REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
-    puntuacion INTEGER CHECK (puntuacion >= 0 AND puntuacion <= 10),
-    estado VARCHAR(50), -- Ej: 'Completado', 'Pendiente', etc.
+    puntuacion NUMERIC(4,2), -- MySQL usaba decimal(4,2)
+    estado VARCHAR(50), 
     actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(id_juego, id_usuario)
 );
