@@ -71,14 +71,13 @@ router.get('/ranking', verificarToken, async (req, res) => {
           j.id_juego, 
           j.nombre,
           j.descripcion,
-          AVG(p.puntuacion) as promedio,
+          (SELECT AVG(puntuacion) FROM puntuaciones WHERE id_juego = j.id_juego AND estado = 'jugado') as promedio,
           (SELECT imagen FROM imagenes_juegos WHERE id_juego = j.id_juego LIMIT 1) as imagen,
-          u_p.puntuacion as mi_puntuacion
+          (SELECT puntuacion FROM puntuaciones WHERE id_juego = j.id_juego AND id_usuario = $1 LIMIT 1) as mi_puntuacion
        FROM juegos j
-       LEFT JOIN puntuaciones p ON j.id_juego = p.id_juego AND p.estado != 'no_jugado'
-       LEFT JOIN puntuaciones u_p ON j.id_juego = u_p.id_juego AND u_p.id_usuario = $1
-       GROUP BY j.id_juego, j.nombre, j.descripcion, u_p.puntuacion
-       HAVING AVG(p.puntuacion) IS NOT NULL
+       WHERE EXISTS (
+         SELECT 1 FROM puntuaciones WHERE id_juego = j.id_juego AND estado = 'jugado'
+       )
        ORDER BY promedio DESC`,
       [req.userId]
     );
