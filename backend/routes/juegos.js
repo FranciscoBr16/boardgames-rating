@@ -67,28 +67,32 @@ router.get('/:id', verificarToken, async (req, res) => {
 router.get('/ranking', verificarToken, async (req, res) => {
   try {
     const userId = req.userId;
-    console.log(`Generando ranking para el usuario ID: ${userId}`);
 
     const { rows: ranking } = await db.query(
-      `SELECT 
+      `WITH PuntuacionesAgrupadas AS (
+          SELECT 
+              id_juego, 
+              AVG(puntuacion) as promedio
+          FROM puntuaciones
+          WHERE estado != 'no_jugado'
+          GROUP BY id_juego
+      )
+      SELECT 
           j.id_juego, 
           j.nombre,
           j.descripcion,
-          p_agg.promedio,
+          pa.promedio,
           (SELECT imagen FROM imagenes_juegos WHERE id_juego = j.id_juego LIMIT 1) as imagen,
-          (SELECT puntuacion FROM puntuaciones WHERE id_juego = j.id_juego AND id_usuario = $1 LIMIT 1) as mi_puntuacion
-       FROM juegos j
-       INNER JOIN (
-         SELECT id_juego, AVG(puntuacion) as promedio
-         FROM puntuaciones
-         WHERE puntuacion IS NOT NULL
-         GROUP BY id_juego
-       ) p_agg ON j.id_juego = p_agg.id_juego
-       ORDER BY p_agg.promedio DESC`,
+          up.puntuacion as mi_puntuacion,
+          up.estado as mi_estado
+      FROM juegos j
+      LEFT JOIN PuntuacionesAgrupadas pa ON j.id_juego = pa.id_juego
+      LEFT JOIN puntuaciones up ON j.id_juego = up.id_juego AND up.id_usuario = $1
+      WHERE pa.promedio IS NOT NULL
+      ORDER BY pa.promedio DESC`,
       [userId]
     );
 
-    console.log(`Ranking generado: ${ranking.length} juegos encontrados`);
     res.json(ranking);
   } catch (error) {
     console.error('Error detallado en ranking:', error);

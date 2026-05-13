@@ -65,6 +65,7 @@ function Ranking() {
           {ranking.map((juego, index) => {
             const posicion = index + 1;
             const esTop5 = posicion <= 5;
+            const haJugado = juego.mi_estado === 'jugado';
             
             return (
               <div 
@@ -81,21 +82,22 @@ function Ranking() {
                 <div className="item-info">
                   <div className="item-main">
                     <h2 className="item-name">{juego.nombre}</h2>
-                    <p className="item-desc">{juego.descripcion?.substring(0, 100)}...</p>
+                    <p className="item-desc">{juego.descripcion}</p>
                   </div>
                   
                   <div className="item-stats">
                     <div className="stat-box global">
-                      <span className="stat-label">Promedio</span>
+                      <span className="stat-label">Promedio Global</span>
                       <span className="stat-value">{Number(juego.promedio).toFixed(1)}</span>
                     </div>
                     
-                    {juego.mi_puntuacion && (
-                      <div className="stat-box personal">
-                        <span className="stat-label">Tu nota</span>
-                        <span className="stat-value">{Number(juego.mi_puntuacion).toFixed(1)}</span>
-                      </div>
-                    )}
+                    <div className={`stat-box personal ${haJugado ? 'calificado' : 'no-jugado'}`}>
+                      <span className="stat-label">Tu Nota</span>
+                      <span className="stat-value">
+                        {haJugado ? Number(juego.mi_puntuacion).toFixed(1) : '-'}
+                      </span>
+                      {!haJugado && <span className="no-jugado-text">No has jugado a este juego</span>}
+                    </div>
                   </div>
                 </div>
                 
