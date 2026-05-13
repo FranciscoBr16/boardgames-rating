@@ -35,34 +35,6 @@ router.get('/', verificarToken, async (req, res) => {
   }
 });
 
-// Obtener un juego específico
-router.get('/:id', verificarToken, async (req, res) => {
-  try {
-    const { rows: juegos } = await db.query(
-      'SELECT * FROM juegos WHERE id_juego = $1',
-      [req.params.id]
-    );
-
-    if (juegos.length === 0) {
-      return res.status(404).json({ mensaje: 'Juego no encontrado' });
-    }
-
-    const juego = juegos[0];
-    
-    const { rows: imagenes } = await db.query(
-      'SELECT imagen FROM imagenes_juegos WHERE id_juego = $1',
-      [juego.id_juego]
-    );
-    
-    juego.imagenes = imagenes.map(img => img.imagen);
-
-    res.json(juego);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al obtener juego' });
-  }
-});
-
 // Obtener el ranking de juegos
 router.get('/ranking', verificarToken, async (req, res) => {
   try {
@@ -97,6 +69,34 @@ router.get('/ranking', verificarToken, async (req, res) => {
   } catch (error) {
     console.error('Error detallado en ranking:', error);
     res.status(500).json({ mensaje: 'Error al obtener el ranking' });
+  }
+});
+
+// Obtener un juego específico
+router.get('/:id', verificarToken, async (req, res) => {
+  try {
+    const { rows: juegos } = await db.query(
+      'SELECT * FROM juegos WHERE id_juego = $1',
+      [req.params.id]
+    );
+
+    if (juegos.length === 0) {
+      return res.status(404).json({ mensaje: 'Juego no encontrado' });
+    }
+
+    const juego = juegos[0];
+    
+    const { rows: imagenes } = await db.query(
+      'SELECT imagen FROM imagenes_juegos WHERE id_juego = $1',
+      [juego.id_juego]
+    );
+    
+    juego.imagenes = imagenes.map(img => img.imagen);
+
+    res.json(juego);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al obtener juego' });
   }
 });
 
