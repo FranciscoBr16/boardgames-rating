@@ -157,6 +157,7 @@
   border-radius: 12px;
   min-width: 110px;
   border: 1px solid #eee;
+  position: relative;
 }
 
 .stat-label {
@@ -172,6 +173,15 @@
   font-size: 1.5rem;
   font-weight: 800;
   color: #333;
+}
+
+.votos-count {
+  font-size: 0.6rem;
+  color: #999;
+  font-weight: 600;
+  margin-top: 2px;
+  text-align: center;
+  line-height: 1.1;
 }
 
 .stat-box.personal.calificado {
@@ -201,12 +211,19 @@
   margin-top: 2px;
 }
 
-.top-badge {
+.top-badge-inline {
   position: absolute;
-  top: 10px;
-  right: 15px;
+  top: -12px;
+  right: -12px;
   font-size: 1.8rem;
-  z-index: 1;
+  z-index: 2;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+  animation: floatBadge 3s ease-in-out infinite;
+}
+
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-5px) scale(1.1); }
 }
 
 .ranking-item:first-child {

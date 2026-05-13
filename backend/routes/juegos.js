@@ -44,16 +44,18 @@ router.get('/ranking', verificarToken, async (req, res) => {
       `WITH PuntuacionesAgrupadas AS (
           SELECT 
               id_juego, 
-              AVG(puntuacion) as promedio
+              AVG(puntuacion) as promedio,
+              COUNT(*) as total_votos
           FROM puntuaciones
           WHERE estado != 'no_jugado'
           GROUP BY id_juego
       )
       SELECT 
           j.id_juego, 
-          j.nombre,
+          j.nombre, 
           j.descripcion,
           pa.promedio,
+          pa.total_votos,
           (SELECT imagen FROM imagenes_juegos WHERE id_juego = j.id_juego LIMIT 1) as imagen,
           up.puntuacion as mi_puntuacion,
           up.estado as mi_estado

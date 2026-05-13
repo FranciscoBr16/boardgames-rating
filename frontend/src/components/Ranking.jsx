@@ -89,6 +89,14 @@ function Ranking() {
                     <div className="stat-box global">
                       <span className="stat-label">Promedio Global</span>
                       <span className="stat-value">{Number(juego.promedio).toFixed(1)}</span>
+                      <span className="votos-count">
+                        {juego.total_votos} {parseInt(juego.total_votos) === 1 ? 'persona ha' : 'personas han'} puntuado
+                      </span>
+                      {esTop5 && (
+                        <div className="top-badge-inline">
+                          {posicion === 1 ? '🥇' : posicion === 2 ? '🥈' : posicion === 3 ? '🥉' : '✨'}
+                        </div>
+                      )}
                     </div>
                     
                     <div className={`stat-box personal ${haJugado ? 'calificado' : 'no-jugado'}`}>
@@ -100,12 +108,6 @@ function Ranking() {
                     </div>
                   </div>
                 </div>
-                
-                {esTop5 && (
-                  <div className="top-badge">
-                    {posicion === 1 ? '🥇' : posicion === 2 ? '🥈' : posicion === 3 ? '🥉' : '✨'}
-                  </div>
-                )}
               </div>
             );
           })}
