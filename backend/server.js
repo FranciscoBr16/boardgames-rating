@@ -39,7 +39,7 @@ app.get('/health/db', async (req, res) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Manejar cualquier otra ruta devolviendo el index.html (SPA Fallback)
-app.get('(.*)', (req, res) => {
+app.get('/:path*', (req, res) => {
   // Solo aplicamos el fallback si no es una ruta de la API
   if (!req.path.startsWith('/api')) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
