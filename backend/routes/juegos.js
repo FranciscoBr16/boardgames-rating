@@ -63,4 +63,31 @@ router.get('/:id', verificarToken, async (req, res) => {
   }
 });
 
-module.exports = router;
+// Obtener el ranking de juegos
+router.get('/ranking', verificarToken, async (req, res) => {
+  try {
+    const { rows: ranking } = await db.query(
+      `SELECT 
+          j.id_juego, 
+          j.nombre,
+          j.descripcion,
+          AVG(p.puntuacion) as promedio,
+          (SELECT imagen FROM imagenes_juegos WHERE id_juego = j.id_juego LIMIT 1) as imagen,
+          u_p.puntuacion as mi_puntuacion
+       FROM juegos j
+       LEFT JOIN puntuaciones p ON j.id_juego = p.id_juego AND p.estado != 'no_jugado'
+       LEFT JOIN puntuaciones u_p ON j.id_juego = u_p.id_juego AND u_p.id_usuario = $1
+       GROUP BY j.id_juego, j.nombre, j.descripcion, u_p.puntuacion
+       HAVING AVG(p.puntuacion) IS NOT NULL
+       ORDER BY promedio DESC`,
+      [req.userId]
+    );
+
+    res.json(ranking);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al obtener el ranking' });
+  }
+});
+
+module.exports = router;

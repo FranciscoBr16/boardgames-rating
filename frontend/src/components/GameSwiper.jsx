@@ -156,9 +156,14 @@ function GameSwiper() {
           <div className="empty-card">
             <h2>🎉 ¡Felicidades!</h2>
             <p>Has calificado todos los juegos disponibles, se que fueron muchos 😅</p>
-            <button onClick={() => navigate('/perfil')} className="btn-primary">
-              Ver mi perfil
-            </button>
+            <div className="empty-actions">
+              <button onClick={() => navigate('/ranking')} className="btn-ranking">
+                🏆 Ver Top de Juegos
+              </button>
+              <button onClick={() => navigate('/perfil')} className="btn-secondary">
+                Ver mi perfil
+              </button>
+            </div>
           </div>
         </div>
       </AnimatedBackground>

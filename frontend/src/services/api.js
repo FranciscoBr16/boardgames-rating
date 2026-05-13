@@ -50,6 +50,11 @@ export const obtenerJuego = async (id) => {
   return response.data;
 };
 
+export const obtenerRanking = async () => {
+  const response = await api.get('/juegos/ranking');
+  return response.data;
+};
+
 // Puntuaciones
 export const obtenerPuntuacionesUsuario = async () => {
   const response = await api.get('/puntuaciones/usuario');

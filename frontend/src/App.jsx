@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './components/Login';
 import GameSwiper from './components/GameSwiper';
 import Profile from './components/Profile';
+import Ranking from './components/Ranking';
 import { getUsuarioActual } from './services/api';
 
 // Componente para proteger rutas
@@ -35,6 +36,15 @@ function App() {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/ranking"
+          element={
+            <ProtectedRoute>
+              <Ranking />
             </ProtectedRoute>
           }
         />
