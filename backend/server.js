@@ -1,9 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const path = require('path');
 const db = require('./config/database');
-
 
 const authRoutes = require('./routes/auth');
 const juegosRoutes = require('./routes/juegos');
@@ -32,19 +30,6 @@ app.get('/health/db', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ ok: false, error: err.message });
-  }
-});
-
-// Servir archivos estáticos del frontend (si están en public)
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Manejar cualquier otra ruta devolviendo el index.html (SPA Fallback)
-app.get('/:path*', (req, res) => {
-  // Solo aplicamos el fallback si no es una ruta de la API
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-  } else {
-    res.status(404).json({ mensaje: 'Endpoint de API no encontrado' });
   }
 });
 
