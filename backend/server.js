@@ -25,6 +25,13 @@ app.use('/api/auth', authRoutes);
 app.use('/api/juegos', juegosRoutes);
 app.use('/api/puntuaciones', puntuacionesRoutes);
 
+app.get('/health/db', async (req, res) => {
+  try {
+    await db.query('SELECT 1');
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ ok: false, error: err.message });
   }
 });
 
